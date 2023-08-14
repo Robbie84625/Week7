@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <meta charset="utf-8"/>
+    <title>My Webside</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS_Selectors.css') }}"/>
+</head>
+<body>
+    <div class="welcome">歡迎光臨! 這是會員頁</div>
+    <div class="UI">
+        <div id="titleText" class="myName">{{name}}歡迎登入系統</div>
+        <form action="signout">
+            <div class="titleText"><button>登出</button></div>
+        </form>
+    </div>
+    <hr/>
+    <div class="UI">
+        <form action="createMessage" method="POST">
+            <div class="titleText">快來留言吧</div>
+            <div class="titleText">內容 <input type="text" name="messageContent" id="messageInput" /></div>
+            <div class="titleText"><button>送出</button></div>
+        </form>
+    </div>
+    <hr/>
+    <div class="UI">
+        <!--透過python flask，讓html樣板引擎能使用迴圈-->
+        {% for message in messages %}
+        <div class="titleText" style="font-weight: normal;">{{ message['name'] }}: {{ message['content']}}</div>
+        {% endfor %}
+    </div>
+    <hr/>
+    <div class="UI">
+        <div class="titleText">查詢會員姓名</div>
+        <div class="titleText"><input type="text" id="username"/><button id="inquire">  查詢</button></div>
+        <div class="searchName"></div>
+        <div class="titleText">更新我的姓名</div>
+        <div class="titleText"><input type="text" id="myname"/><button id="update">  更新</button></div>
+    </div>
+    <script>
+        const apiUrl = "/api/member";
+        document.getElementById('inquire').addEventListener('click', async (event) => 
+        {
+            event.preventDefault();
+            const usernameValue = document.querySelector('#username').value;
+
+            try 
+            {
+                const response = await fetch(`${apiUrl}?username=${encodeURIComponent(usernameValue)}`);
+                if (response.ok) 
+                {
+                    const data = await response.json();
+                    // 在這裡處理後端返回的資料
+                    console.log(data)
+                    const nameDiv = document.querySelector('.searchName');
+                    nameDiv.innerHTML = '';
+                    let nameText;  
+                    if(data['data']===null)
+                    {
+                        nameText='找不到資料';
+                    }
+                    else
+                    {
+                        const name = data['data']['name'];
+                        const username = data['data']['username'];
+                
+                        nameText = `${name}(${username})`;
+                    }
+                    nameDiv.appendChild(document.createTextNode(nameText));
+                } 
+                else 
+                {
+                    console.error('API 請求失敗', response.statusText);
+                }
+            } 
+            catch (error) 
+            {
+                    console.error('發生錯誤：', error);
+            }
+        });
+        document.getElementById('update').addEventListener('click', async (event) => 
+        {
+            event.preventDefault();
+            const newName = document.querySelector('#myname').value;
+
+            try 
+            {
+                const response = await fetch(apiUrl, 
+                    {
+                        method: 'PATCH',
+                        headers: {'Content-Type': 'application/json'},body: JSON.stringify({"name": newName})
+                    }
+                    
+                );
+                if (response.ok) 
+                {
+                    const responseData = await response.json();
+
+                    const titleText = document.getElementById('titleText');
+                    titleText.textContent = `${newName}歡迎登入系統`;
+                }
+            } 
+            catch (error) 
+            {
+                    console.error('發生錯誤：', error);
+            }
+        });
+    </script>
+
+</body>
+</html>

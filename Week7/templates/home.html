@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <meta charset="utf-8"/>
+    <title>My Webside</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS_Selectors.css') }}"/>
+</head>
+<body>
+    <div class="welcome">歡迎光臨請註冊登入系統</div>
+    <div class="UI">
+        <div class="titleText">註冊帳號</div>
+        <form action="signup" method="POST" onsubmit="return signupAgree();">
+            <div class="titleText">姓名 <input type="text" name="name" id="signupName" /></div>
+            <div class="titleText">帳號 <input type="text" name="username" id="signupUserName"/></div>
+            <div class="titleText">密碼 <input type="password" name="password" id="signupPassword" /></div>
+            <div class="titleText"><button>註冊</button></div>
+        </form>
+
+        <hr style="margin: 30px;"/>
+        <div id="titleText">登入系統</div>
+        <form action="signin" method="POST" onsubmit="return signinAgree();">
+            <div class="titleText">帳號 <input type="text" name="username" id="signinUserName" /></div>
+            <div class="titleText">密碼 <input type="password" name="password" id="signinPassword"/></div>
+            <div class="titleText"><button>登入</button></div>
+        </form>
+    </div>
+    <script>
+        function signupAgree()
+        {
+            let nameInput = document.getElementById('signupName');
+            let userNameInput = document.getElementById('signupUserName');
+            let passwordInput = document.getElementById('signupPassword');
+            
+            if (nameInput.value === '' || passwordInput.value === ''|| userNameInput.value ==='') {
+            alert('請輸入完整資訊！');
+            return false;
+            }
+
+            return true;
+        }
+        function signinAgree()
+        {
+            let userNameInput = document.getElementById('signinUserName');
+            let passwordInput = document.getElementById('signinPassword');
+            
+            if (userNameInput.value === '' || passwordInput.value === '') {
+            alert('請輸入帳號密碼！');
+            return false;
+            }
+
+            return true;
+        }
+    </script>
+</body>
+</html>

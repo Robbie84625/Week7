@@ -1,0 +1,27 @@
+body{
+    padding: 0px; margin: 0px;
+}
+
+.welcome
+{
+    padding: 0px; border: 0px; height: 100px; background-color: #000080; 
+    font-size: 2em;color:white;font-family: "Helvetica", "Arial","LiHei Pro","黑體-繁","微軟正黑體", sans-serif;
+    text-shadow: 2px 2px 2px greenyellow;
+    
+    /*完美置中*/
+    display: flex; justify-content: center; align-items: center;
+}
+.UI
+{
+    display: flex; flex-wrap: wrap; width: 600px; margin-left: auto; margin-right: auto;
+    display: grid; margin-top: 20px; 
+}
+#titleText{
+    text-align: center;font-size: 20px;font-weight: bold;margin: 5px;
+}
+.searchName{
+    text-align: center;font-size: 20px;font-weight: normal;margin: 5px;
+}
+.titleText{
+    text-align: center;font-size: 20px;font-weight: bold;margin: 5px;
+}
