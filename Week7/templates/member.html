@@ -83,26 +83,31 @@
             event.preventDefault();
             const newName = document.querySelector('#myname').value;
 
-            try 
+            if (newName.trim() !== '')
             {
-                const response = await fetch(apiUrl, 
-                    {
-                        method: 'PATCH',
-                        headers: {'Content-Type': 'application/json'},body: JSON.stringify({"name": newName})
-                    }
-                    
-                );
-                if (response.ok) 
+                try 
                 {
-                    const responseData = await response.json();
+                    const response = await fetch
+                    (
+                        apiUrl, 
+                        {
+                            method: 'PATCH',
+                            headers: {'Content-Type': 'application/json'},body: JSON.stringify({"name": newName})
+                        }
+                        
+                    );
+                    if (response.ok) 
+                    {
+                        const responseData = await response.json();
 
-                    const titleText = document.getElementById('titleText');
-                    titleText.textContent = `${newName}歡迎登入系統`;
+                        const titleText = document.getElementById('titleText');
+                        titleText.textContent = `${newName}歡迎登入系統`;
+                    }
+                } 
+                catch (error) 
+                {
+                        console.error('發生錯誤：', error);
                 }
-            } 
-            catch (error) 
-            {
-                    console.error('發生錯誤：', error);
             }
         });
     </script>
