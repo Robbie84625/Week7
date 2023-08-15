@@ -88,17 +88,18 @@ def signin():
     password=request.form["password"]
 
     # 建立Cursor 物件，用來對資料庫下達 SQL 指令
-    cursor=con.cursor()
+    cursor=con.cursor(dictionary=True)
     
     cursor.execute("SELECT * FROM member WHERE username = %s AND password = %s" , (username,password))
     user_data = cursor.fetchone()
+    print(user_data)
     # 檢查帳號是否存在並且密碼是否正確
     if user_data==None:
         return redirect("/error?message=帳號或密碼輸入錯誤")
 
     else:    
-        session["name"] =  user_data[1]
-        session["id"] =  user_data[0]
+        session['name'] =  user_data['name']
+        session['id'] =  user_data['id']
         return redirect("/member")
         
     # 關閉資料庫
@@ -147,9 +148,8 @@ def get_data():
             username = request.args.get('username')
             cursor = con.cursor()
 
-            username=session['name']
             # 更新資料庫中的名稱
-            cursor.execute("UPDATE member SET name=%s WHERE name=%s", (newName, session['name']))
+            cursor.execute("UPDATE member SET name=%s WHERE id=%s", (newName, session['id']))
             con.commit()
 
             session['name'] = newName
